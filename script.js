@@ -1,12 +1,10 @@
-let count = 0;
+let idCount = 1;
 
 function curry(f) {
     return function(a) {
         return function(b) {
             return function(c) {
-                return function (d) {
-                    return f(a, b, c, d);
-                }
+                    return f(a, b, c);
             }
         };
     };
@@ -17,8 +15,9 @@ function getListContent(elem, count) {
   
     for(let i = 0; i < count; i++) {
       let childElement = document.createElement(elem);
-      childElement.append(i);
+      childElement.append("Element " + i);
       childElement.style = "margin: 5px 0px 0px 5px;";
+      childElement.id = (idCount-1).toString() + i.toString();
       result.push(childElement);
     }
 
@@ -31,13 +30,13 @@ function getListContent(elem, count) {
     return result;
   }
   
-function addElement(a, b, c, d) {
-    const parentElement = document.createElement(a);
-    parentElement.id = count++;
-    let elem = document.getElementById(d);
+function addElement(a, b, c) {
+    const parentElement = document.getElementById(a);
+    if (parentElement.id != "container") {
+        parentElement.id = idCount++;
+        parentElement.style = " margin-left: 3px; margin-top: 3px; border: 2px dashed lightblue;";
+    }
     parentElement.append(...getListContent(b, c));
-    parentElement.style = "margin: 20px; border: 1px dashed blue;"
-    elem.append(parentElement);
     let collection = parentElement.getElementsByTagName("button");
     for (let i = 0; i < collection.length; i++) {
         collection[i].addEventListener("click",  function(){
